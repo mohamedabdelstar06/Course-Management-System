@@ -38,10 +38,10 @@ public class EnrollmentController {
         return ResponseEntity.ok(enrollmentService.getByStudent(studentId));
     }
 
-    /** DELETE /api/enrollments/{id} — 204 No Content (hard delete / unenrol) */
+    /** DELETE /api/enrollments/{id} — 200 OK with JSON message */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> unenroll(@PathVariable Long id) {
+    public ResponseEntity<java.util.Map<String, String>> unenroll(@PathVariable Long id) {
         enrollmentService.unenroll(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(java.util.Map.of("message", "Enrollment deleted successfully"));
     }
 }
