@@ -10,6 +10,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.coursemanagement.dto.ErrorResponse;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.MediaType;
+import java.time.LocalDateTime;
 
 /**
  * Security configuration — Phase 2 (JWT enforcement).
@@ -27,9 +32,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final ObjectMapper objectMapper;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, ObjectMapper objectMapper) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.objectMapper = objectMapper;
     }
 
     /**
@@ -58,6 +65,28 @@ public class SecurityConfig {
                 .requestMatchers("/uploads/**").permitAll()
                 // All other endpoints require a valid JWT
                 .anyRequest().authenticated()
+            )
+            .exceptionHandling(exceptions -> exceptions
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    ErrorResponse error = new ErrorResponse(
+                            LocalDateTime.now(),
+                            HttpServletResponse.SC_UNAUTHORIZED,
+                            "Unauthorized: Missing or invalid token"
+                    );
+                    objectMapper.writeValue(response.getOutputStream(), error);
+                })
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    ErrorResponse error = new ErrorResponse(
+                            LocalDateTime.now(),
+                            HttpServletResponse.SC_FORBIDDEN,
+                            "Forbidden: You do not have permission to access this resource"
+                    );
+                    objectMapper.writeValue(response.getOutputStream(), error);
+                })
             )
             // Wire the JWT filter before the default username/password filter
             .addFilterBefore(jwtAuthenticationFilter,
