@@ -1,7 +1,6 @@
 package com.example.coursemanagement.serviceImpl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.beans.factory.annotation.Value;
 import com.example.coursemanagement.service.FileStorageService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,8 +18,8 @@ import java.util.UUID;
 @SuppressWarnings("null")
 public class FileStorageServiceImpl implements FileStorageService {
 
-    @Autowired
-    private String uploadDir = "uploads";
+    @Value("${upload.dir:uploads}")
+    private String uploadDir;
 
     @PostConstruct
     public void init() {
