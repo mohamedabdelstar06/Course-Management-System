@@ -1,5 +1,7 @@
 package com.example.coursemanagement.serviceImpl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.example.coursemanagement.dto.CourseRequest;
 import com.example.coursemanagement.dto.CourseResponse;
 import com.example.coursemanagement.entity.Course;
@@ -16,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.coursemanagement.service.FileStorageService;
 
-import lombok.RequiredArgsConstructor;
 
 /**
  * Course CRUD + soft-delete logic.
@@ -24,15 +25,18 @@ import lombok.RequiredArgsConstructor;
  * stays open while the mapper accesses lazy associations.
  */
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 @SuppressWarnings("null")
 public class CourseServiceImpl implements CourseService {
 
-    private final CourseRepository courseRepository;
-    private final InstructorRepository instructorRepository;
-    private final CourseMapper courseMapper;
-    private final FileStorageService fileStorageService;
+    @Autowired
+    private CourseRepository courseRepository;
+    @Autowired
+    private InstructorRepository instructorRepository;
+    @Autowired
+    private CourseMapper courseMapper;
+    @Autowired
+    private FileStorageService fileStorageService;
 
     // -----------------------------------------------------------------------
     // Write operations

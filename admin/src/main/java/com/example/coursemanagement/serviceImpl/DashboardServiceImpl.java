@@ -1,5 +1,7 @@
 package com.example.coursemanagement.serviceImpl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.example.coursemanagement.dto.CourseResponse;
 import com.example.coursemanagement.mapper.CourseMapper;
 import com.example.coursemanagement.repository.CourseRepository;
@@ -7,7 +9,6 @@ import com.example.coursemanagement.repository.EnrollmentRepository;
 import com.example.coursemanagement.repository.InstructorRepository;
 import com.example.coursemanagement.repository.StudentRepository;
 import com.example.coursemanagement.service.DashboardService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,15 +18,19 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class DashboardServiceImpl implements DashboardService {
 
-    private final CourseRepository courseRepository;
-    private final StudentRepository studentRepository;
-    private final InstructorRepository instructorRepository;
-    private final EnrollmentRepository enrollmentRepository;
-    private final CourseMapper courseMapper;
+    @Autowired
+    private CourseRepository courseRepository;
+    @Autowired
+    private StudentRepository studentRepository;
+    @Autowired
+    private InstructorRepository instructorRepository;
+    @Autowired
+    private EnrollmentRepository enrollmentRepository;
+    @Autowired
+    private CourseMapper courseMapper;
 
     @Override
     public Map<String, Object> getDashboardMetrics() {

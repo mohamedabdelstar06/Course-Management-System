@@ -1,5 +1,7 @@
 package com.example.coursemanagement.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.example.coursemanagement.dto.StudentResponse;
 import com.example.coursemanagement.service.StudentService;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +20,8 @@ import java.util.List;
 @RequestMapping("/api/students")
 public class StudentController {
 
-    private final StudentService studentService;
-
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
+    @Autowired
+    private StudentService studentService;
 
     /** GET /api/students — 200 OK */
     @GetMapping

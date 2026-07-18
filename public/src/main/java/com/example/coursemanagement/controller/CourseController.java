@@ -1,5 +1,7 @@
 package com.example.coursemanagement.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.example.coursemanagement.dto.CourseRequest;
 import com.example.coursemanagement.dto.CourseResponse;
 import com.example.coursemanagement.service.CourseService;
@@ -23,11 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/courses")
 public class CourseController {
 
-    private final CourseService courseService;
-
-    public CourseController(CourseService courseService) {
-        this.courseService = courseService;
-    }
+    @Autowired
+    private CourseService courseService;
 
     /**
      * GET /api/courses — 200 OK, paginated.

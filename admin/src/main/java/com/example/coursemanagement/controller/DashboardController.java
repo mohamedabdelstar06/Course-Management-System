@@ -1,5 +1,7 @@
 package com.example.coursemanagement.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.example.coursemanagement.service.DashboardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,11 +14,8 @@ import java.util.Map;
 @RequestMapping("/api/dashboard")
 public class DashboardController {
 
-    private final DashboardService dashboardService;
-
-    public DashboardController(DashboardService dashboardService) {
-        this.dashboardService = dashboardService;
-    }
+    @Autowired
+    private DashboardService dashboardService;
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> getDashboard() {

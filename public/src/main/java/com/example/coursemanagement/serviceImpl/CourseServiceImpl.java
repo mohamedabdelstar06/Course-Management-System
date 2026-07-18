@@ -1,5 +1,7 @@
 package com.example.coursemanagement.serviceImpl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.example.coursemanagement.dto.CourseRequest;
 import com.example.coursemanagement.dto.CourseResponse;
 import com.example.coursemanagement.entity.Course;
@@ -13,26 +15,26 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.coursemanagement.service.FileStorageService;
 
-import lombok.RequiredArgsConstructor;
 
-/**
- * Course CRUD + soft-delete logic.
- * All read methods run in a read-only transaction so that the Hibernate session
- * stays open while the mapper accesses lazy associations.
- */
+// Course CRUD + soft-delete logic
+// All read methods run in a read-only transaction so that the Hibernate session
+// stays open while the mapper accesses lazy associations.
+ 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 @SuppressWarnings("null")
 public class CourseServiceImpl implements CourseService {
 
-    private final CourseRepository courseRepository;
-    private final InstructorRepository instructorRepository;
-    private final CourseMapper courseMapper;
-    private final FileStorageService fileStorageService;
+    @Autowired
+    private CourseRepository courseRepository;
+    @Autowired
+    private InstructorRepository instructorRepository;
+    @Autowired
+    private CourseMapper courseMapper;
+    @Autowired
+    private FileStorageService fileStorageService;
 
     // -----------------------------------------------------------------------
     // Write operations
@@ -80,11 +82,8 @@ public class CourseServiceImpl implements CourseService {
         course.setDeleted(true);
         courseRepository.save(course);
     }
-
-    // -----------------------------------------------------------------------
-    // Read operations (readOnly transaction from class-level annotation)
-    // -----------------------------------------------------------------------
-
+ // Read operations (readOnly transaction from class level annotation)
+    
     @Override
     public Page<CourseResponse> findAll(Pageable pageable) {
         return courseRepository.findAllByDeletedFalse(pageable)
@@ -96,9 +95,7 @@ public class CourseServiceImpl implements CourseService {
         return courseMapper.toResponse(resolveActiveCourse(id));
     }
 
-    // -----------------------------------------------------------------------
     // Helpers
-    // -----------------------------------------------------------------------
 
     private Course resolveActiveCourse(Long id) {
         return courseRepository.findByIdAndDeletedFalse(id)

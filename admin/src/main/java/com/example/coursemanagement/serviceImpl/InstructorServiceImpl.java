@@ -1,5 +1,7 @@
 package com.example.coursemanagement.serviceImpl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.example.coursemanagement.dto.InstructorResponse;
 import com.example.coursemanagement.exception.NotFoundException;
 import com.example.coursemanagement.mapper.InstructorMapper;
@@ -11,28 +13,24 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import lombok.RequiredArgsConstructor;
 
 
 //   Read-only instructor queries.
-//   Instructors are created via AuthService.register() — not here.
+//   Instructors are created via AuthService.register() â€” not here.
 //   The class level readOnly transaction keeps the Hibernate session open
 //   while the mapper accesses lazy user associations.
  
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 @SuppressWarnings("null")
 public class InstructorServiceImpl implements InstructorService {
 
-    private final InstructorRepository instructorRepository;
-    private final InstructorMapper instructorMapper;
+    @Autowired
+    private InstructorRepository instructorRepository;
+    @Autowired
+    private InstructorMapper instructorMapper;
 
-    // public InstructorServiceImpl(InstructorRepository instructorRepository,
-    //                              InstructorMapper instructorMapper) {
-    //     this.instructorRepository = instructorRepository;
-    //     this.instructorMapper = instructorMapper;
-    // }
+    //
     @Override
     public InstructorResponse findById(Long id) {
         return instructorRepository.findById(id)

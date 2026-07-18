@@ -1,5 +1,7 @@
 package com.example.coursemanagement.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.example.coursemanagement.dto.AuthResponse;
 import com.example.coursemanagement.dto.LoginRequest;
 import com.example.coursemanagement.dto.RegisterRequest;
@@ -18,11 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
+    @Autowired
+    private AuthService authService;
 
     /** POST /api/auth/register — 201 Created */
     @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

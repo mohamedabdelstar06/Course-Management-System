@@ -1,5 +1,7 @@
 package com.example.coursemanagement.serviceImpl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.example.coursemanagement.dto.AuthResponse;
 import com.example.coursemanagement.dto.LoginRequest;
 import com.example.coursemanagement.dto.RegisterRequest;
@@ -22,25 +24,30 @@ import com.example.coursemanagement.config.JwtUtil;
 
 import com.example.coursemanagement.service.FileStorageService;
 
-import lombok.RequiredArgsConstructor;
 
 /**
  * Handles registration and login.
  * Registration creates User + Student/Instructor atomically in one transaction.
  */
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 @SuppressWarnings("null")
 public class AuthServiceImpl implements AuthService {
 
-    private final UserRepository userRepository;
-    private final StudentRepository studentRepository;
-    private final InstructorRepository instructorRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final UserMapper userMapper;
-    private final JwtUtil jwtUtil;
-    private final FileStorageService fileStorageService;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private StudentRepository studentRepository;
+    @Autowired
+    private InstructorRepository instructorRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
+    private FileStorageService fileStorageService;
 
     // -----------------------------------------------------------------------
     // Register

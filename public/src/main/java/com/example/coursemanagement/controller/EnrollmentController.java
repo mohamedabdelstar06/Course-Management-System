@@ -1,4 +1,6 @@
 package com.example.coursemanagement.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import com.example.coursemanagement.dto.EnrollmentRequest;
 import com.example.coursemanagement.dto.EnrollmentResponse;
 import com.example.coursemanagement.service.EnrollmentService;
@@ -19,11 +21,8 @@ import java.util.List;
 @RequestMapping("/api/enrollments")
 public class EnrollmentController {
 
-    private final EnrollmentService enrollmentService;
-
-    public EnrollmentController(EnrollmentService enrollmentService) {
-        this.enrollmentService = enrollmentService;
-    }
+    @Autowired
+    private EnrollmentService enrollmentService;
 
     /** POST /api/enrollments — 201 Created or 409 Conflict (duplicate) */
     @PostMapping

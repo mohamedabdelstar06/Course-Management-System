@@ -1,5 +1,7 @@
 package com.example.coursemanagement.serviceImpl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.example.coursemanagement.dto.EnrollmentRequest;
 import com.example.coursemanagement.dto.EnrollmentResponse;
 import com.example.coursemanagement.entity.Course;
@@ -18,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import lombok.RequiredArgsConstructor;
 
 /**
  * Handles enrol / unenrol / list operations.
@@ -26,15 +27,18 @@ import lombok.RequiredArgsConstructor;
  * DB unique constraint can fire.
  */
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 @SuppressWarnings("null")
 public class EnrollmentServiceImpl implements EnrollmentService {
 
-    private final EnrollmentRepository enrollmentRepository;
-    private final StudentRepository studentRepository;
-    private final CourseRepository courseRepository;
-    private final EnrollmentMapper enrollmentMapper;
+    @Autowired
+    private EnrollmentRepository enrollmentRepository;
+    @Autowired
+    private StudentRepository studentRepository;
+    @Autowired
+    private CourseRepository courseRepository;
+    @Autowired
+    private EnrollmentMapper enrollmentMapper;
 
     // -----------------------------------------------------------------------
     // Enrol
